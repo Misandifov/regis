@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from stats.models import Sale
 from .models import Supplier, Warehouse, Category, Product
 from .validators import validate_numeric_barcode
 
@@ -90,6 +92,12 @@ class ProductScanSerializer(serializers.ModelSerializer):
         instance.quantity -= current_quantity
         instance.save()
 
+        sale = Sale.objects.create(
+            user=self.context['request'].user,
+            product=instance,
+            quantity=current_quantity
+        )
+
         instance._current_quantity = current_quantity
         return instance
 
@@ -99,10 +107,3 @@ class ProductScanSerializer(serializers.ModelSerializer):
             # Agar update emas, oddiy GET bo‘lsa total_price 0 chiqadi
             return 0
         return instance.selling_price * current_quantity
-
-
-        # return {
-        #     "id": instance.id,
-        #     "title": instance.title,
-        #     "image": instance.image.url if instance.image else None,
-        # }
