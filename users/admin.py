@@ -5,5 +5,22 @@ from users.models import User
 
 
 @admin.register(User)
-class CustomUserAdmin(BaseUserAdmin):
-    list_display = ("id", 'email', 'phone_number', 'username', 'is_staff', 'is_superuser', 'created_at', 'updated_at')
+class UserAdmin(BaseUserAdmin):
+    # 'username' maydoni yo‘q, shuning uchun undan qutulamiz
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        ('Personal info', {'fields': ('first_name', 'last_name', 'phone_number')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Important dates', {'fields': ('last_login', 'date_joined')}),
+    )
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'password1', 'password2', 'is_staff', 'is_superuser'),
+        }),
+    )
+
+    list_display = ('email', 'first_name', 'last_name', 'is_staff', 'is_active')
+    search_fields = ('email', 'first_name', 'last_name')
+    ordering = ('email',)

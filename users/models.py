@@ -1,24 +1,19 @@
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.db import models
 
-from users.managers import CustomUserManager
+from users.managers import UserManager
 from utills.model import CreateUpdateTracker, nb
 
 
-class User(AbstractBaseUser, PermissionsMixin, CreateUpdateTracker):
+class User(AbstractUser, CreateUpdateTracker):
+    username = None  # AbstractUser dan kelgan maydonni olib tashlaymiz
     email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=15, **nb)
-    username = models.CharField(max_length=150, **nb)
-    first_name = models.CharField(max_length=150, **nb)
-    last_name = models.CharField(max_length=150, **nb)
-
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = []  # superuser yaratishda faqat email va password so'raladi
 
-    objects = CustomUserManager()
+    objects = UserManager()
 
     def __str__(self):
         return self.email
