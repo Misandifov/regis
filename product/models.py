@@ -43,7 +43,7 @@ class Product(CreateUpdateTracker):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_product')
     title = models.CharField(max_length=255)
     unit = models.CharField(max_length=20, choices=UNIT_CHOICES)
-    quantity = models.PositiveIntegerField()
+    quantity = models.PositiveIntegerField(default=0)
     warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE, related_name='warehouse_products')
 
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')

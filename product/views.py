@@ -70,10 +70,7 @@ class ProductDetailView(RetrieveUpdateDestroyAPIView):
         return Product.objects.filter(user=self.request.user)
 
 
-class ProductScanView(generics.RetrieveAPIView):
+class ProductScanView(generics.RetrieveUpdateAPIView):
+    queryset = Product.objects.all()
     serializer_class = ProductScanSerializer
-    permission_classes = [IsAuthenticated]
     lookup_field = 'barcode'
-
-    def get_queryset(self):
-        return Product.objects.filter(user=self.request.user)

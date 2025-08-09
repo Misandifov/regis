@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     # ichki applar
     'users',
     'product',
+    'stats',
 ]
 
 
